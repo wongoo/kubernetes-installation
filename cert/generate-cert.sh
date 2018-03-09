@@ -1,3 +1,4 @@
+# 产生安装所需证书
 
 if hash cfssl 2>/dev/null; then
     echo "cfssl exists"
