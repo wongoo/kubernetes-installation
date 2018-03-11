@@ -8,6 +8,6 @@ cert/generate-cert.sh
 
 docker/docker-ce-installation.sh
 
-etcd/etcd-installation.sh
+etcd/etcd-install.sh
 
 

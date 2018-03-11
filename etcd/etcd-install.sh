@@ -11,13 +11,17 @@ else
 
 
     echo "-------> config etcd"
-    sudo mv etcd/etcd.service /usr/lib/systemd/system/
+    sudo cp etcd/etcd.service /usr/lib/systemd/system/
     sed -i "s/123.123.123.123/$INSTALL_PARAM_MASTER_IP/g" /usr/lib/systemd/system/etcd.service
 
-    sudo mv etcd/etcd.conf /etc/etcd/etcd.conf
+    sudo mkdir /etc/etcd
+    sudo cp etcd/etcd.conf /etc/etcd/etcd.conf
     sed -i "s#infra1=https://123.123.123.123:2380#$INSTALL_PARAM_ETCD_CLUSTER_LIST#g" /etc/etcd/etcd.conf
+    sed -i "s#123.123.123.123#$CURR_NODE_IP#g" /etc/etcd/etcd.conf
 
     echo "-------> start etcd"
+    sudo mkdir /var/lib/etcd/
+
     systemctl daemon-reload
     systemctl enable etcd
     systemctl start etcd
@@ -29,6 +33,5 @@ else
       --cert-file=/etc/kubernetes/ssl/kubernetes.pem \
       --key-file=/etc/kubernetes/ssl/kubernetes-key.pem \
       cluster-health
-
 
 fi
