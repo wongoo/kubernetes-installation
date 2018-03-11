@@ -12,7 +12,10 @@ fi
 
 echo "-------> config etcd"
 sudo mv etcd/etcd.service /usr/lib/systemd/system/
+sed -i "s/172.20.0.113/$INSTALL_PARAM_MASTER_IP/g" /usr/lib/systemd/system/etcd.service
+
 sudo mv etcd/etcd.conf /etc/etcd/etcd.conf
+sed -i "s#infra1=https://172.20.0.113:2380#$INSTALL_PARAM_ETCD_CLUSTER_LIST#g" /etc/etcd/etcd.conf
 
 echo "-------> start etcd"
 systemctl daemon-reload

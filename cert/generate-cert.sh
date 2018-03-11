@@ -3,6 +3,8 @@
 if hash cfssl 2>/dev/null; then
     echo "cfssl exists"
 else
+    go/go-lang-install.sh
+    
     go get -u github.com/cloudflare/cfssl/cmd/...
 fi
 
