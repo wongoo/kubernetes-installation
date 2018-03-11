@@ -4,11 +4,12 @@ if hash cfssl 2>/dev/null; then
     echo "cfssl exists"
 else
     go/go-lang-install.sh
-    
+
+    echo "-------> start download cfssl"
     go get -u github.com/cloudflare/cfssl/cmd/...
 fi
 
-# ===========go into
+# ===========go into directory cert
 cd cert/
 
 echo "-------> generate ca cert"
