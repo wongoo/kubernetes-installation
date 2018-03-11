@@ -1,6 +1,9 @@
 
-export INSTALL_PARAM_MASTER_IP=172.16.3.235
-export INSTALL_PARAM_ETCD_CLUSTER_LIST="infra1=https://172.16.3.235:2380"
+export CURR_NODE_IP=$(ip route get 8.8.8.8 | awk '{print $NF; exit}')
+echo "current ip: $CURR_NODE_IP"
+
+export INSTALL_PARAM_MASTER_IP=$CURR_NODE_IP
+export INSTALL_PARAM_ETCD_CLUSTER_LIST="infra1=https:/$CURR_NODE_IP:2380"
 
 
 

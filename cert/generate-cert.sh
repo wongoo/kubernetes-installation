@@ -16,8 +16,10 @@ echo "-------> generate ca cert"
 cfssl gencert -initca ca-csr.json | cfssljson -bare ca
 
 echo "-------> generate kubernetes cert"
+cp kubernetes-csr.json kubernetes-csr.json.tmp
+sed -i "s/123.123.123.123/$INSTALL_PARAM_MASTER_IP/g" kubernetes-csr.json.tmp
 cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=kubernetes \
-    kubernetes-csr.json | cfssljson -bare kubernetes
+    kubernetes-csr.json.tmp | cfssljson -bare kubernetes
 
 echo "-------> generate admin cert"
 cfssl gencert  -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=kubernetes \
