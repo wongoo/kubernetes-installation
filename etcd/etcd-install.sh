@@ -27,11 +27,12 @@ else
     systemctl start etcd
     systemctl status etcd
 
-    echo "-------> check etcd"
-    etcdctl \
-      --ca-file=/etc/kubernetes/ssl/ca.pem \
-      --cert-file=/etc/kubernetes/ssl/kubernetes.pem \
-      --key-file=/etc/kubernetes/ssl/kubernetes-key.pem \
-      cluster-health
-
 fi
+#=================================================
+
+echo "-------> check etcd"
+etcdctl \
+  --ca-file=/etc/kubernetes/ssl/ca.pem \
+  --cert-file=/etc/kubernetes/ssl/kubernetes.pem \
+  --key-file=/etc/kubernetes/ssl/kubernetes-key.pem \
+  cluster-health

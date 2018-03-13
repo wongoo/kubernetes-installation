@@ -1,5 +1,7 @@
 #!/bin/sh
 
+k8s/k8s-version.sh
+
 # k8s/k8s-repo-install.sh
 k8s/k8s-docker-config.sh
 k8s/k8s-centos7-config.sh
@@ -14,7 +16,6 @@ else
     tar -xzvf kubernetes-server-linux-amd64.tar.gz
     cp -r kubernetes-server-linux-amd64/server/bin/{kube-apiserver,kube-controller-manager,kube-scheduler,kubectl,kube-proxy,kubelet} /usr/local/bin/
     chmod a+x /usr/local/bin/kube*
-
 fi
 
 k8s/k8s-token.sh

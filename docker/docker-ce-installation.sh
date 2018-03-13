@@ -32,3 +32,6 @@ else
 
 fi
 
+
+echo "-------> show docker info"
+docker info

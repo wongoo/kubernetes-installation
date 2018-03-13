@@ -35,3 +35,7 @@ EOF
     echo "PATH=$PATH"
 
 fi
+
+# ========================
+echo "-------> go version"
+go version

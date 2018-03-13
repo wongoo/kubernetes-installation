@@ -10,4 +10,6 @@ docker/docker-ce-installation.sh
 
 etcd/etcd-install.sh
 
+k8s/k8s-master-install.sh
+
 

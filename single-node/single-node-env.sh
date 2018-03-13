@@ -8,4 +8,3 @@ export INSTALL_PARAM_ETCD_CLUSTER_LIST="infra1=https://$CURR_NODE_IP:2380"
 
 export INSTALL_K8S_VERSION=v1.9.3
 
-

@@ -13,7 +13,7 @@ fi
 cd cert/
 
 # ===================================
-if [ -f ca.pem] && [ -f ca-key.pem]
+if [ -f ca.pem ] && [ -f ca-key.pem ]
 then
     echo "-------> ca.pem and ca-key.pem exits"
 else
@@ -22,7 +22,7 @@ else
 fi
 
 # ===================================
-if [ -f kubernetes.pem] && [ -f kubernetes-key.pem]
+if [ -f kubernetes.pem ] && [ -f kubernetes-key.pem ]
 then
     echo "-------> kubernetes.pem and kubernetes-key.pem exits"
 else
@@ -34,7 +34,7 @@ else
 fi
 
 # ===================================
-if [ -f admin.pem] && [ -f admin-key.pem]
+if [ -f admin.pem ] && [ -f admin-key.pem ]
 then
     echo "-------> admin.pem and admin-key.pem exits"
 else
@@ -44,7 +44,7 @@ else
 fi
 
 # ===================================
-if [ -f kube-proxy.pem] && [ -f kube-proxy-key.pem]
+if [ -f kube-proxy.pem ] && [ -f kube-proxy-key.pem ]
 then
     echo "-------> kube-proxy.pem and kube-proxy-key.pem exits"
 else
