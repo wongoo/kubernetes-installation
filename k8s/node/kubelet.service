@@ -6,18 +6,25 @@ Requires=docker.service
 
 [Service]
 WorkingDirectory=/var/lib/kubelet
-EnvironmentFile=-/etc/kubernetes/kube-base.conf
-EnvironmentFile=-/etc/kubernetes/kubelet.conf
+EnvironmentFile=-/etc/kubernetes/config
+EnvironmentFile=-/etc/kubernetes/kubelet
 ExecStart=/usr/local/bin/kubelet \
             $KUBE_LOGTOSTDERR \
             $KUBE_LOG_LEVEL \
-            $KUBELET_API_SERVER \
             $KUBELET_ADDRESS \
             $KUBELET_PORT \
             $KUBELET_HOSTNAME \
             $KUBE_ALLOW_PRIV \
             $KUBELET_POD_INFRA_CONTAINER \
-            $KUBELET_ARGS
+            $KUBELET_ARGS \
+            --cgroup-driver=systemd \
+            --bootstrap-kubeconfig=/etc/kubernetes/bootstrap.kubeconfig \
+            --kubeconfig=/etc/kubernetes/kubelet.kubeconfig \
+            --cert-dir=/etc/kubernetes/ssl \
+            --cluster-domain=cluster.local \
+            --hairpin-mode promiscuous-bridge \
+            --serialize-image-pulls=false
+
 Restart=on-failure
 
 [Install]

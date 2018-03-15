@@ -26,6 +26,15 @@ else
     docker-ce-17.03.2.ce-1.el7.centos \
     docker-ce-selinux-17.03.2.ce-1.el7.centos
 
+    touch /etc/docker/daemon.json
+    cat <<EOF >  /etc/docker/daemon.json
+{
+  "exec-opts": ["native.cgroupdriver=systemd"]
+}
+EOF
+
+    sudo echo "DOCKER_OPTS=\"--registry-mirror=http://hub-mirror.c.163.com\"" >> /etc/default/docker
+
     echo "-------> start docker service"
     systemctl enable docker
     systemctl start docker

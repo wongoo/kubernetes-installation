@@ -1,20 +1,43 @@
 #!/bin/sh
 
+
+
 echo "-------> start config kubelet"
 
+systemctl stop kubelet
 
+
+# kubelet 启动时向 kube-apiserver 发送 TLS bootstrapping 请求，需要先将 bootstrap token 文件中的 kubelet-bootstrap 用户赋予 system:node-bootstrapper cluster 角色(role)
+# 然后 kubelet 才能有权限创建认证请求(certificate signing requests)
 # --user=kubelet-bootstrap 是在 /etc/kubernetes/token.csv 文件中指定的用户名，同时也写入了 /etc/kubernetes/bootstrap.kubeconfig 文件
 kubectl create clusterrolebinding kubelet-bootstrap \
   --clusterrole=system:node-bootstrapper \
   --user=kubelet-bootstrap
 
+# =============================================
 cp k8s/node/kubelet.service /usr/lib/systemd/system/kubelet.service
-cp k8s/node/kubelet.conf /etc/kubernetes/kubelet.conf
-sed -i "s/123.123.123.123/$INSTALL_PARAM_MASTER_IP/g" /etc/kubernetes/kubelet.conf
-sed -i "s/111.111.111.111/$CURR_NODE_IP/g" /etc/kubernetes/kubelet.conf
+DOCKER_CGROUP_DRIVER=$(docker info | grep -i cgroup|awk '{match($0,"Cgroup Driver: (.+)",a)}END{print a[1]}')
+if [ "$DOCKER_CGROUP_DRIVER" != "systemd" ]
+then
+    sed -i "s/systemd/$DOCKER_CGROUP_DRIVER/g" /usr/lib/systemd/system/kubelet.service
+fi
 
 
+# =============================================
+cp k8s/node/kubelet /etc/kubernetes/kubelet
+sed -i "s/123.123.123.123/${KUBE_MASTER_IP}/g" /etc/kubernetes/kubelet
+sed -i "s/111.111.111.111/${CURR_NODE_IP}/g" /etc/kubernetes/kubelet
+
+
+# =============================================
+mkdir /var/lib/kubelet
+
+# =============================================
 systemctl daemon-reload
+
+# 启动 kubelet 时，如果 --kubeconfig 指定的文件不存在，则使用 bootstrap kubeconfig 向 API server 请求客户端证书。
+# 在批准 kubelet 的证书请求和回执时，将包含了生成的密钥和证书的 kubeconfig 文件写入由 -kubeconfig 指定的路径。
+# 证书和密钥文件将被放置在由 --cert-dir 指定的目录中。
 
 systemctl enable kubelet
 systemctl start kubelet

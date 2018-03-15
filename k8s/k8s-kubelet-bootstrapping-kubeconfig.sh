@@ -1,19 +1,21 @@
 #!/bin/sh
 
+
+
 echo "-------> start kubeconfig kubelet-bootstrapping"
 
 previous_dir=$(pwd)
 
 # ================GO INTO DIR=======================
 cd /etc/kubernetes
-export KUBE_APISERVER="https://$INSTALL_PARAM_APISERVER_IP:6443"
+export KUBE_APISERVER="https://$KUBE_APISERVER_IP:6443"
 
 
 if [ -f bootstrap.kubeconfig ]
 then
-    echo "bootstrap.kubeconfig exists"
-else
-
+    echo "bootstrap.kubeconfig exists, move to bootstrap.kubeconfig.bak"
+    mv bootstrap.kubeconfig bootstrap.kubeconfig.bak
+fi
 
 #-----------------创建 kubelet bootstrapping kubeconfig 文件-----------------
 # 设置集群参数
@@ -37,7 +39,6 @@ kubectl config set-context default \
 # 设置默认上下文
 kubectl config use-context default --kubeconfig=bootstrap.kubeconfig
 
-fi
 
 # =================GO OUT DIR======================
 cd $previous_dir

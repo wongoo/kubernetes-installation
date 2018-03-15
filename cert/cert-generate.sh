@@ -1,5 +1,7 @@
 # 产生安装所需证书
 
+
+
 if hash cfssl 2>/dev/null; then
     echo "cfssl exists"
 else
@@ -27,8 +29,9 @@ then
     echo "-------> kubernetes.pem and kubernetes-key.pem exits"
 else
     echo "-------> generate kubernetes cert"
-    cp kubernetes-csr.json kubernetes-csr.json.tmp
-    sed -i "s/123.123.123.123/$INSTALL_PARAM_MASTER_IP/g" kubernetes-csr.json.tmp
+    rm -f kubernetes-csr.json.tmp
+    cp  kubernetes-csr.json kubernetes-csr.json.tmp
+    sed -i s/123.123.123.123/${KUBE_MASTER_IP}/g kubernetes-csr.json.tmp
     cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=kubernetes \
         kubernetes-csr.json.tmp | cfssljson -bare kubernetes
 fi
@@ -63,7 +66,6 @@ cfssl-certinfo -cert kubernetes.pem
 echo "-------> move certs to /etc/kubernetes/ssl"
 sudo mkdir -p /etc/kubernetes/ssl
 sudo cp *.pem /etc/kubernetes/ssl
-
 
 # ===========go out
 cd ..

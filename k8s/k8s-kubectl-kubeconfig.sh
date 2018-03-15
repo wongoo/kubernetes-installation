@@ -1,19 +1,22 @@
 #!/bin/sh
 
+
+
 echo "-------> start kubeconfig kubectl"
 
 previous_dir=$(pwd)
 
 # ================GO INTO DIR=======================
 cd /etc/kubernetes
-export KUBE_APISERVER="https://$INSTALL_PARAM_APISERVER_IP:6443"
+export KUBE_APISERVER="https://$KUBE_APISERVER_IP:6443"
 
 
 
 if [ -f ~/.kube/config ]
 then
-    echo "~/.kube/config exists"
-else
+    echo "~/.kube/config exists, move to ~/.kube/config.bak"
+    mv ~/.kube/config ~/.kube/config.bak
+fi
 
 #-----------------创建 kubectl kubeconfig 文件-----------------
 # 设置集群参数
@@ -38,8 +41,8 @@ kubectl config use-context kubernetes
 
 # 注意：~/.kube/config文件拥有对该集群的最高权限，请妥善保管。
 
+cat ~/.kube/config
 
-fi
 
 
 # =================GO OUT DIR======================

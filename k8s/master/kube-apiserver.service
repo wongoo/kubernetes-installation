@@ -5,8 +5,8 @@ After=network.target
 After=etcd.service
 
 [Service]
-EnvironmentFile=-/etc/kubernetes/kube-base.conf
-EnvironmentFile=-/etc/kubernetes/apiserver.conf
+EnvironmentFile=-/etc/kubernetes/config
+EnvironmentFile=-/etc/kubernetes/apiserver
 ExecStart=/usr/local/bin/kube-apiserver \
         $KUBE_LOGTOSTDERR \
         $KUBE_LOG_LEVEL \
@@ -18,6 +18,26 @@ ExecStart=/usr/local/bin/kube-apiserver \
         $KUBE_SERVICE_ADDRESSES \
         $KUBE_ADMISSION_CONTROL \
         $KUBE_API_ARGS
+        --authorization-mode=RBAC \
+        --kubelet-https=true \
+        --enable-bootstrap-token-auth \
+        --token-auth-file=/etc/kubernetes/token.csv \
+        --service-node-port-range=30000-32767 \
+        --tls-cert-file=/etc/kubernetes/ssl/kubernetes.pem \
+        --tls-private-key-file=/etc/kubernetes/ssl/kubernetes-key.pem \
+        --client-ca-file=/etc/kubernetes/ssl/ca.pem \
+        --service-account-key-file=/etc/kubernetes/ssl/ca-key.pem \
+        --etcd-cafile=/etc/kubernetes/ssl/ca.pem \
+        --etcd-certfile=/etc/kubernetes/ssl/kubernetes.pem \
+        --etcd-keyfile=/etc/kubernetes/ssl/kubernetes-key.pem \
+        --enable-swagger-ui=true \
+        --apiserver-count=1 \
+        --audit-log-maxage=30 \
+        --audit-log-maxbackup=3 \
+        --audit-log-maxsize=100 \
+        --audit-log-path=/var/lib/audit.log \
+        --event-ttl=1h
+
 Restart=on-failure
 Type=notify
 LimitNOFILE=65536

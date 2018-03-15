@@ -12,7 +12,7 @@ DOCKER_CGROUP_DRIVER=$(docker info | grep -i cgroup|awk '{match($0,"Cgroup Drive
 echo "K8S_NODE_CGROUP_DRIVER=$K8S_NODE_CGROUP_DRIVER"
 echo "DOCKER_CGROUP_DRIVER=$DOCKER_CGROUP_DRIVER"
 
-if [ $DOCKER_CGROUP_DRIVER != $K8S_NODE_CGROUP_DRIVER ]
+if [ "$DOCKER_CGROUP_DRIVER" != "$K8S_NODE_CGROUP_DRIVER" ]
 then
     sed -i "s/cgroup-driver=$K8S_NODE_CGROUP_DRIVER/cgroup-driver=$DOCKER_CGROUP_DRIVER/g" /etc/systemd/system/kubelet.service.d/10-kubeadm.conf
     systemctl daemon-reload
