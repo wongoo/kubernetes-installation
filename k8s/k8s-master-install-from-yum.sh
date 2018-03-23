@@ -24,9 +24,9 @@ else
     rm -rf /var/lib/etcd/
 
     kubeadm init \
-      --kubernetes-version=$KUBE_VERSION \
+      --kubernetes-version=$K8S_VER \
       --pod-network-cidr=10.254.0.0/16 \
-      --apiserver-advertise-address=$KUBE_MASTER_IP \
+      --apiserver-advertise-address=$K8S_MASTER_IP \
       --ignore-preflight-errors=CRI
 
     # ignore CRI error: unable to check if the container runtime at "/var/run/dockershim.sock" is running: exit status 1

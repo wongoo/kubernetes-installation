@@ -14,20 +14,16 @@ kubectl create clusterrolebinding kubelet-bootstrap \
   --clusterrole=system:node-bootstrapper \
   --user=kubelet-bootstrap
 
+
 # =============================================
 cp k8s/node/kubelet.service /usr/lib/systemd/system/kubelet.service
-DOCKER_CGROUP_DRIVER=$(docker info | grep -i cgroup|awk '{match($0,"Cgroup Driver: (.+)",a)}END{print a[1]}')
-if [ "$DOCKER_CGROUP_DRIVER" != "systemd" ]
-then
-    sed -i "s/systemd/$DOCKER_CGROUP_DRIVER/g" /usr/lib/systemd/system/kubelet.service
-fi
 
+sed -i "s/__CURR_NODE_IP__/${CURR_NODE_IP}/g" /usr/lib/systemd/system/kubelet.service
 
 # =============================================
-cp k8s/node/kubelet /etc/kubernetes/kubelet
-sed -i "s/123.123.123.123/${KUBE_MASTER_IP}/g" /etc/kubernetes/kubelet
-sed -i "s/111.111.111.111/${CURR_NODE_IP}/g" /etc/kubernetes/kubelet
-
+# error: failed to run Kubelet: cannot create certificate signing request: certificatesigningrequests.certificates.k8s.io is forbidden: User "system:anonymous" cannot create certificatesigningrequests.certificates.k8s.io at the cluster scope
+# 以上错误待解决，暂时使用管理权限的kubeconfig配置
+cp ~/.kube/config /etc/kubernetes/kubelet.kubeconfig
 
 # =============================================
 mkdir /var/lib/kubelet
@@ -47,9 +43,8 @@ systemctl status kubelet
 # kubectl get csr
 # NAME        AGE       REQUESTOR           CONDITION
 # csr-2b308   4m        kubelet-bootstrap   Pending
-CSR_NO=$(kubectl get csr | grep Pending | awk '{print $1}')
+# CSR_NO=$(kubectl get csr | grep Pending | awk '{print $1}')
 
 # master 执行
 # kubectl certificate approve csr-2b308
-kubectl certificate approve ${CSR_NO}
-
+# kubectl certificate approve ${CSR_NO}

@@ -8,7 +8,7 @@ previous_dir=$(pwd)
 
 # ================GO INTO DIR=======================
 cd /etc/kubernetes
-export KUBE_APISERVER="https://$KUBE_APISERVER_IP:6443"
+export KUBE_APISERVER="https://$K8S_APISERVER_IP:6443"
 
 
 if [ -f bootstrap.kubeconfig ]
@@ -18,7 +18,7 @@ then
 fi
 
 #-----------------创建 kubelet bootstrapping kubeconfig 文件-----------------
-# 设置集群参数
+# 设置集群参数,集群名称kubernetes
 kubectl config set-cluster kubernetes \
   --certificate-authority=/etc/kubernetes/ssl/ca.pem \
   --embed-certs=true \

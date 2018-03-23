@@ -9,22 +9,17 @@ WorkingDirectory=/var/lib/kubelet
 EnvironmentFile=-/etc/kubernetes/config
 EnvironmentFile=-/etc/kubernetes/kubelet
 ExecStart=/usr/local/bin/kubelet \
-            $KUBE_LOGTOSTDERR \
-            $KUBE_LOG_LEVEL \
-            $KUBELET_ADDRESS \
-            $KUBELET_PORT \
-            $KUBELET_HOSTNAME \
-            $KUBE_ALLOW_PRIV \
-            $KUBELET_POD_INFRA_CONTAINER \
-            $KUBELET_ARGS \
-            --cgroup-driver=systemd \
+            --fail-swap-on=false \
+            --pod-infra-container-image=gcr.io/google_containers/pause-amd64:3.0 \
+            --cgroup-driver=cgroupfs \
+            --runtime-cgroups=/systemd/system.slice \
+            --kubelet-cgroups=/systemd/system.slice \
             --bootstrap-kubeconfig=/etc/kubernetes/bootstrap.kubeconfig \
             --kubeconfig=/etc/kubernetes/kubelet.kubeconfig \
-            --cert-dir=/etc/kubernetes/ssl \
-            --cluster-domain=cluster.local \
-            --hairpin-mode promiscuous-bridge \
-            --serialize-image-pulls=false
-
+            --cert-dir=/var/lib/kubelet/pki \
+            --address=0.0.0.0 \
+            --port=10250 \
+            --hostname-override=__CURR_NODE_IP__
 Restart=on-failure
 
 [Install]

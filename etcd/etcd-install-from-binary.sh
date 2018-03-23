@@ -2,20 +2,20 @@
 
 
 
-export ETCD_VERSION=v3.3.2
+export ETCD_VER=v3.3.2
 
 if hash etcd 2>/dev/null; then
     echo "etcd exists"
 else
     echo "-------> install etcd"
-    if [ -f etcd-${ETCD_VERSION}-linux-amd64.tar.gz ]
+    if [ -f etcd-${ETCD_VER}-linux-amd64.tar.gz ]
     then
-        echo "etcd-${ETCD_VERSION}-linux-amd64.tar.gz exists"
+        echo "etcd-${ETCD_VER}-linux-amd64.tar.gz exists"
     else
-        wget https://github.com/coreos/etcd/releases/download/${ETCD_VERSION}/etcd-${ETCD_VERSION}-linux-amd64.tar.gz
+        wget https://github.com/coreos/etcd/releases/download/${ETCD_VER}/etcd-${ETCD_VER}-linux-amd64.tar.gz
     fi
-    tar -xvf etcd-${ETCD_VERSION}-linux-amd64.tar.gz
-    sudo mv etcd-${ETCD_VERSION}-linux-amd64/etcd* /usr/local/bin
+    tar -xvf etcd-${ETCD_VER}-linux-amd64.tar.gz
+    sudo mv etcd-${ETCD_VER}-linux-amd64/etcd* /usr/local/bin
 
 fi
 
@@ -23,14 +23,13 @@ systemctl stop etcd
 
 echo "-------> config etcd"
 sudo cp etcd/etcd.service /usr/lib/systemd/system/
-sed -i "s/123.123.123.123/$KUBE_MASTER_IP/g" /usr/lib/systemd/system/etcd.service
-sed -i "s/111.111.111.111/$CURR_NODE_IP/g" /usr/lib/systemd/system/etcd.service
 
-sudo mkdir /etc/etcd
-sudo cp etcd/etcd.conf /etc/etcd/etcd.conf
-sed -i "s#https://123.123.123.123:2380#$ETCD_ENDPOINTS#g" /etc/etcd/etcd.conf
-sed -i "s#123.123.123.123#$KUBE_MASTER_IP#g" /etc/etcd/etcd.conf
-sed -i "s/111.111.111.111/$CURR_NODE_IP/g" /etc/etcd/etcd.conf
+sed -i "s/__ETCD_NAME__/$ETCD_NAME/g" /usr/lib/systemd/system/etcd.service
+sed -i "s/__CURR_NODE_IP__/$CURR_NODE_IP/g" /usr/lib/systemd/system/etcd.service
+sed -i "s#__ETCD_ENDPOINTS__#$ETCD_ENDPOINTS#g" /usr/lib/systemd/system/etcd.service
+sed -i "s#__ETCD_ADVERTISE_PEER_URLS__#$ETCD_ADVERTISE_PEER_URLS#g" /usr/lib/systemd/system/etcd.service
+sed -i "s/__ETCD_PEER_URLS__/$ETCD_PEER_URLS/g" /usr/lib/systemd/system/etcd.service
+sed -i "s/__ETCD_ADVERTISE_CLIENT_URLS__/$ETCD_ADVERTISE_CLIENT_URLS/g" /usr/lib/systemd/system/etcd.service
 
 echo "-------> start etcd"
 sudo mkdir /var/lib/etcd/

@@ -1,7 +1,5 @@
 #!/bin/sh
 
-
-
 k8s/k8s-centos7-config.sh
 
 if [ -f /usr/local/bin/kubectl ] && [ -f /usr/local/bin/kube-apiserver ]
@@ -12,7 +10,7 @@ else
     then
         echo "use exists kubernetes-server-linux-amd64.tar.gz"
     else
-        wget https://storage.googleapis.com/kubernetes-release/release/${KUBE_VERSION}/kubernetes-server-linux-amd64.tar.gz
+        wget https://storage.googleapis.com/kubernetes-release/release/${K8S_VER}/kubernetes-server-linux-amd64.tar.gz
     fi
 
     tar -xzvf kubernetes-server-linux-amd64.tar.gz
@@ -30,11 +28,6 @@ k8s/k8s-docker-config.sh
 #-----------------分发 kubeconfig 文件-----------------
 # 复制到各个node
 # cp bootstrap.kubeconfig kube-proxy.kubeconfig /etc/kubernetes/
-
-
-# =================================
-cp k8s/master/config /etc/kubernetes/config
-sed -i "s/123.123.123.123/$KUBE_MASTER_IP/g" /etc/kubernetes/config
 
 k8s/k8s-apiserver-config.sh
 k8s/k8s-controller-manager-config.sh

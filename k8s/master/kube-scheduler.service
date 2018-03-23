@@ -3,14 +3,13 @@ Description=Kubernetes Scheduler Plugin
 Documentation=https://github.com/GoogleCloudPlatform/kubernetes
 
 [Service]
-EnvironmentFile=-/etc/kubernetes/config
-EnvironmentFile=-/etc/kubernetes/scheduler
 ExecStart=/usr/local/bin/kube-scheduler \
-            $KUBE_LOGTOSTDERR \
-            $KUBE_LOG_LEVEL \
-            $KUBE_MASTER \
-            $KUBE_ADDRESS \
-            $KUBE_SCHEDULER_ARGS
+          --logtostderr=true \
+          --v=0 \
+          --leader-elect=true \
+          --address=127.0.0.1 \
+          --port=10251 \
+          --master=http://127.0.0.1:8080
 Restart=on-failure
 LimitNOFILE=65536
 

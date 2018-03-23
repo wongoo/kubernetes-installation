@@ -20,7 +20,7 @@
 /root/ssl/admin-csr.json
 /root/ssl/kube-proxy-csr.json
 
-# 生成的签名请求文件，似乎没用到
+# 签名请求文件
 /root/ssl/ca.csr
 /root/ssl/kubernetes.csr
 /root/ssl/kube-proxy.csr

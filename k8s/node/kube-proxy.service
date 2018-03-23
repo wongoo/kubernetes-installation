@@ -4,13 +4,15 @@ Documentation=https://github.com/GoogleCloudPlatform/kubernetes
 After=network.target
 
 [Service]
-EnvironmentFile=-/etc/kubernetes/config
-EnvironmentFile=-/etc/kubernetes/proxy
 ExecStart=/usr/local/bin/kube-proxy \
-        $KUBE_LOGTOSTDERR \
-        $KUBE_LOG_LEVEL \
-        $KUBE_MASTER \
-        $KUBE_PROXY_ARGS
+          --logtostderr=true \
+          --v=0 \
+          --kubeconfig=/etc/kubernetes/kube-proxy.kubeconfig \
+          --hostname-override=__CURR_NODE_IP__ \
+          --bind-address=__CURR_NODE_IP__ \
+          --proxy-port-range=40000-45000 \
+          --cluster-cidr=__K8S_CLUSTER_IP_RANGE__ \
+          --master=__K8S_MASTER_URL__
 Restart=on-failure
 LimitNOFILE=65536
 

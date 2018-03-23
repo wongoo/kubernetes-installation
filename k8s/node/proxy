@@ -1,8 +1,0 @@
-###
-# kubernetes proxy config
-
-# default config should be adequate
-
-# Add your own!
-KUBE_PROXY_ARGS="--bind-address=111.111.111.111 --hostname-override=111.111.111.111 --kubeconfig=/etc/kubernetes/kube-proxy.kubeconfig --cluster-cidr=000.000.000.000/00"
-

@@ -8,7 +8,7 @@ previous_dir=$(pwd)
 
 # ================GO INTO DIR=======================
 cd /etc/kubernetes
-export KUBE_APISERVER="https://$KUBE_APISERVER_IP:6443"
+export KUBE_APISERVER="https://$K8S_APISERVER_IP:6443"
 
 
 

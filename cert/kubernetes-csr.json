@@ -2,7 +2,7 @@
     "CN": "kubernetes",
     "hosts": [
         "127.0.0.1",
-        "123.123.123.123",
+        "__K8S_MASTER_IP__",
         "kubernetes",
         "kubernetes.default",
         "kubernetes.default.svc",
