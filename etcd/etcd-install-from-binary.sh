@@ -24,12 +24,13 @@ systemctl stop etcd
 echo "-------> config etcd"
 sudo cp etcd/etcd.service /usr/lib/systemd/system/
 
-sed -i "s/__ETCD_NAME__/$ETCD_NAME/g" /usr/lib/systemd/system/etcd.service
-sed -i "s/__CURR_NODE_IP__/$CURR_NODE_IP/g" /usr/lib/systemd/system/etcd.service
+sed -i "s#__ETCD_NAME__#$ETCD_NAME#g" /usr/lib/systemd/system/etcd.service
+sed -i "s#__ETCD_CLUSTER_LIST__#$ETCD_CLUSTER_LIST#g" /usr/lib/systemd/system/etcd.service
+sed -i "s#__CURR_NODE_IP__#$CURR_NODE_IP#g" /usr/lib/systemd/system/etcd.service
 sed -i "s#__ETCD_ENDPOINTS__#$ETCD_ENDPOINTS#g" /usr/lib/systemd/system/etcd.service
+sed -i "s#__ETCD_PEER_URLS__#$ETCD_PEER_URLS#g" /usr/lib/systemd/system/etcd.service
 sed -i "s#__ETCD_ADVERTISE_PEER_URLS__#$ETCD_ADVERTISE_PEER_URLS#g" /usr/lib/systemd/system/etcd.service
-sed -i "s/__ETCD_PEER_URLS__/$ETCD_PEER_URLS/g" /usr/lib/systemd/system/etcd.service
-sed -i "s/__ETCD_ADVERTISE_CLIENT_URLS__/$ETCD_ADVERTISE_CLIENT_URLS/g" /usr/lib/systemd/system/etcd.service
+sed -i "s#__ETCD_ADVERTISE_CLIENT_URLS__#$ETCD_ADVERTISE_CLIENT_URLS#g" /usr/lib/systemd/system/etcd.service
 
 echo "-------> start etcd"
 sudo mkdir /var/lib/etcd/

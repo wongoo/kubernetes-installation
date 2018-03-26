@@ -29,7 +29,7 @@ else
     touch /etc/docker/daemon.json
     cat <<EOF >  /etc/docker/daemon.json
 {
-  "exec-opts": ["native.cgroupdriver=systemd"]
+  "exec-opts": ["native.cgroupdriver=cgroupfs"]
 }
 EOF
 

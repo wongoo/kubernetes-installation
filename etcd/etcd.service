@@ -16,13 +16,13 @@ ExecStart=/usr/local/bin/etcd \
   --peer-key-file=/etc/kubernetes/ssl/kubernetes-key.pem \
   --trusted-ca-file=/etc/kubernetes/ssl/ca.pem \
   --peer-trusted-ca-file=/etc/kubernetes/ssl/ca.pem \
-  --initial-advertise-peer-urls __ETCD_ADVERTISE_PEER_URLS__ \
-  --listen-peer-urls __ETCD_PEER_URLS__ \
-  --listen-client-urls __ETCD_ENDPOINTS__,http://127.0.0.1:2379 \
-  --advertise-client-urls __ETCD_ADVERTISE_CLIENT_URLS__ \
-  --initial-cluster-token etcd-cluster \
-  --initial-cluster __ETCD_CLUSTER_LIST__ \
-  --initial-cluster-state new \
+  --initial-advertise-peer-urls=__ETCD_ADVERTISE_PEER_URLS__ \
+  --listen-peer-urls=__ETCD_PEER_URLS__ \
+  --listen-client-urls=__ETCD_ENDPOINTS__,http://127.0.0.1:2379 \
+  --advertise-client-urls=__ETCD_ADVERTISE_CLIENT_URLS__ \
+  --initial-cluster-token=etcd-cluster \
+  --initial-cluster=__ETCD_CLUSTER_LIST__ \
+  --initial-cluster-state=new \
   --data-dir=/var/lib/etcd
 
 Restart=on-failure

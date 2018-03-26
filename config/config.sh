@@ -37,5 +37,8 @@ echo "ETCD_ADVERTISE_PEER_URLS=$ETCD_ADVERTISE_PEER_URLS"
 export ETCD_ADVERTISE_CLIENT_URLS=https://$CURR_NODE_IP:2379
 echo "ETCD_ADVERTISE_CLIENT_URLS=$ETCD_ADVERTISE_CLIENT_URLS"
 
-export ETCD_CLUSTER_LIST="infra1=https://$CURR_NODE_IP:2380"
-echo "ETCD_CLUSTER_LIST=$CLUSTER_LIST"
+export ETCD_CLUSTER_LIST=infra1=https://$CURR_NODE_IP:2380
+echo "ETCD_CLUSTER_LIST=$ETCD_CLUSTER_LIST"
+# --------------------------------------------------------
+
+source config/k8s-token.sh
