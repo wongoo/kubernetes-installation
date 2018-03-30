@@ -9,19 +9,19 @@ Documentation=https://github.com/coreos
 Type=notify
 WorkingDirectory=/var/lib/etcd/
 ExecStart=/usr/local/bin/etcd \
-  --name __ETCD_NAME__ \
+  --name __V_ETCD_NAME__ \
   --cert-file=/etc/kubernetes/ssl/kubernetes.pem \
   --key-file=/etc/kubernetes/ssl/kubernetes-key.pem \
   --peer-cert-file=/etc/kubernetes/ssl/kubernetes.pem \
   --peer-key-file=/etc/kubernetes/ssl/kubernetes-key.pem \
   --trusted-ca-file=/etc/kubernetes/ssl/ca.pem \
   --peer-trusted-ca-file=/etc/kubernetes/ssl/ca.pem \
-  --initial-advertise-peer-urls=__ETCD_ADVERTISE_PEER_URLS__ \
-  --listen-peer-urls=__ETCD_PEER_URLS__ \
-  --listen-client-urls=__ETCD_ENDPOINTS__,http://127.0.0.1:2379 \
-  --advertise-client-urls=__ETCD_ADVERTISE_CLIENT_URLS__ \
+  --initial-advertise-peer-urls=__V_ETCD_ADVERTISE_PEER_URLS__ \
+  --listen-peer-urls=__V_ETCD_LISTEN_PEER_URLS__ \
+  --listen-client-urls=__V_ETCD_LISTEN_CLIENT_URLS__,http://127.0.0.1:2379 \
+  --advertise-client-urls=__V_ETCD_ADVERTISE_CLIENT_URLS__ \
   --initial-cluster-token=etcd-cluster \
-  --initial-cluster=__ETCD_CLUSTER_LIST__ \
+  --initial-cluster=__V_ETCD_CLUSTER_LIST__ \
   --initial-cluster-state=new \
   --data-dir=/var/lib/etcd
 

@@ -11,8 +11,8 @@ Type=notify
 EnvironmentFile=/etc/sysconfig/flanneld
 EnvironmentFile=-/etc/sysconfig/docker-network
 ExecStart=/usr/bin/flanneld-start \
-  -etcd-endpoints=${FLANNEL_ETCD_ENDPOINTS} \
-  -etcd-prefix=${FLANNEL_ETCD_PREFIX} \
+  -etcd-endpoints=${FLANNEL_V_ETCD_ENDPOINTS} \
+  -etcd-prefix=${FLANNEL_V_ETCD_PREFIX} \
   $FLANNEL_OPTIONS
 ExecStartPost=/usr/libexec/flannel/mk-docker-opts.sh -k DOCKER_NETWORK_OPTIONS -d /run/flannel/docker
 Restart=on-failure

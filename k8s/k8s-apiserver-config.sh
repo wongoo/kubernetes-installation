@@ -15,7 +15,7 @@ cp k8s/master/kube-apiserver.service /usr/lib/systemd/system/kube-apiserver.serv
 
 sed -i "s/__CURR_NODE_IP__/$CURR_NODE_IP/g" /usr/lib/systemd/system/kube-apiserver.service
 sed -i "s#__K8S_CLUSTER_IP_RANGE__#$K8S_CLUSTER_IP_RANGE#g" /usr/lib/systemd/system/kube-apiserver.service
-sed -i "s#__ETCD_ENDPOINTS__#$ETCD_ENDPOINTS#g" /usr/lib/systemd/system/kube-apiserver.service
+sed -i "s#__V_ETCD_ENDPOINTS__#$V_ETCD_ENDPOINTS#g" /usr/lib/systemd/system/kube-apiserver.service
 
 
 systemctl daemon-reload

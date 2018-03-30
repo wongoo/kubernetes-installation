@@ -1,19 +1,19 @@
 #!/bin/sh
 
 #执行下面的命令为docker分配IP地址段。
-etcdctl --endpoints=$ETCD_ENDPOINTS \
+etcdctl --endpoints=$V_ETCD_ENDPOINTS \
   --ca-file=/etc/kubernetes/ssl/ca.pem \
   --cert-file=/etc/kubernetes/ssl/kubernetes.pem \
   --key-file=/etc/kubernetes/ssl/kubernetes-key.pem \
   mkdir /kube-centos/network
 
-etcdctl --endpoints=$ETCD_ENDPOINTS \
+etcdctl --endpoints=$V_ETCD_ENDPOINTS \
   --ca-file=/etc/kubernetes/ssl/ca.pem \
   --cert-file=/etc/kubernetes/ssl/kubernetes.pem \
   --key-file=/etc/kubernetes/ssl/kubernetes-key.pem \
   rm /kube-centos/network/config
 
-etcdctl --endpoints=$ETCD_ENDPOINTS \
+etcdctl --endpoints=$V_ETCD_ENDPOINTS \
   --ca-file=/etc/kubernetes/ssl/ca.pem \
   --cert-file=/etc/kubernetes/ssl/kubernetes.pem \
   --key-file=/etc/kubernetes/ssl/kubernetes-key.pem \
@@ -35,7 +35,7 @@ mv /etc/sysconfig/flanneld /etc/sysconfig/flanneld.orignal
 cp flannel/flanneld.service /usr/lib/systemd/system/flanneld.service
 cp flannel/flanneld /etc/sysconfig/flanneld
 
-sed -i "s#__ETCD_ENDPOINTS__#$ETCD_ENDPOINTS#g" /etc/sysconfig/flanneld
+sed -i "s#__V_ETCD_ENDPOINTS__#$V_ETCD_ENDPOINTS#g" /etc/sysconfig/flanneld
 
 # =========================================================
 systemctl daemon-reload

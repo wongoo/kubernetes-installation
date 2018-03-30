@@ -1,14 +1,26 @@
 
+execute the commands one by one manually:
 ```
 git clone https://github.com/wongoo/kubernetes-installation.git
+
 cd kubernetes-installation
+
 find . -regex ".*\.sh" | xargs chmod +x
+
+mkdir temp
+rm -rf temp/*
 
 source config/config.sh
 
-single-node/single-node-install.sh
+docker/docker-ce-installation.sh
 
+cert/cert-generate.sh
 
+cert/cert-ca-to-trusted.sh
+
+etcd/etcd-install-from-binary.sh
+
+k8s/k8s-master-install-from-binary.sh
 ```
 
 Reference:

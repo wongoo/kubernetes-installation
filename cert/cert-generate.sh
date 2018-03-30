@@ -8,6 +8,7 @@ else
     go/go-lang-install.sh
 
     echo "-------> start download cfssl"
+    yum install gcc
     go get -u github.com/cloudflare/cfssl/cmd/...
 fi
 
@@ -31,7 +32,10 @@ else
     echo "-------> generate kubernetes cert"
     rm -f kubernetes-csr.json.tmp
     cp  kubernetes-csr.json kubernetes-csr.json.tmp
-    sed -i s/__K8S_MASTER_IP__/${K8S_MASTER_IP}/g kubernetes-csr.json.tmp
+    sed -i s/__K8S_NODE1__/${K8S_NODE1}/g kubernetes-csr.json.tmp
+    sed -i s/__K8S_NODE2__/${K8S_NODE2}/g kubernetes-csr.json.tmp
+    sed -i s/__K8S_NODE3__/${K8S_NODE3}/g kubernetes-csr.json.tmp
+
     cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=kubernetes \
         kubernetes-csr.json.tmp | cfssljson -bare kubernetes
 fi
