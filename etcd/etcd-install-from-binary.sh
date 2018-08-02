@@ -1,24 +1,28 @@
 #!/bin/sh
 
 
-
-export V_ETCD_VER=v3.3.2
+if ETCD_VER=="" ; then
+    echo "ETCD_VER not define"
+    exit 1
+fi
 
 if hash etcd 2>/dev/null; then
     echo "etcd exists"
 else
     echo "-------> install etcd"
-    if [ -f etcd-${V_ETCD_VER}-linux-amd64.tar.gz ]
+    if [ -f etcd-${ETCD_VER}-linux-amd64.tar.gz ]
     then
-        echo "etcd-${V_ETCD_VER}-linux-amd64.tar.gz exists"
+        echo "etcd-${ETCD_VER}-linux-amd64.tar.gz exists"
     else
-        wget https://github.com/coreos/etcd/releases/download/${V_ETCD_VER}/etcd-${V_ETCD_VER}-linux-amd64.tar.gz
+        wget https://github.com/coreos/etcd/releases/download/${ETCD_VER}/etcd-${ETCD_VER}-linux-amd64.tar.gz
     fi
-    tar -xvf etcd-${V_ETCD_VER}-linux-amd64.tar.gz
-    sudo mv etcd-${V_ETCD_VER}-linux-amd64/etcd* /usr/local/bin
+    tar -xvf etcd-${ETCD_VER}-linux-amd64.tar.gz
+    sudo mv etcd-${ETCD_VER}-linux-amd64/etcd* /usr/local/bin
 
 fi
 
+# ------------------------
+# stop first
 systemctl stop etcd
 
 

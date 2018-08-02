@@ -1,6 +1,4 @@
-# On each of your machines, install Docker. Version v1.12 is recommended, but v1.11, v1.13 and 17.03 are known to work as well.
-# Versions 17.06+ might work, but have not yet been tested and verified by the Kubernetes node team.
-
+#!/bin/sh
 
 if hash docker 2>/dev/null; then
     echo "docker exists"

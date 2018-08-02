@@ -19,7 +19,7 @@ fi
 
 #-----------------创建 kubelet bootstrapping kubeconfig 文件-----------------
 # 设置集群参数,集群名称kubernetes
-kubectl config set-cluster kubernetes \
+kubectl config set-cluster ${K8S_CLUSTER_NAME} \
   --certificate-authority=/etc/kubernetes/ssl/ca.pem \
   --embed-certs=true \
   --server=${KUBE_APISERVER} \
@@ -32,7 +32,7 @@ kubectl config set-credentials kubelet-bootstrap \
 
 # 设置上下文参数
 kubectl config set-context default \
-  --cluster=kubernetes \
+  --cluster=${K8S_CLUSTER_NAME} \
   --user=kubelet-bootstrap \
   --kubeconfig=bootstrap.kubeconfig
 

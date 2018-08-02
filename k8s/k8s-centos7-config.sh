@@ -2,9 +2,16 @@
 
 echo "-------> start config centos7"
 
+
+echo "-----------> disable firewalld"
 systemctl disable firewalld
 systemctl stop firewalld
 
+echo "-----------> disable selinux"
 sed -i 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/selinux/config
+
+echo "-----------> enable bridge-nf-call-iptables"
 echo 1 > /proc/sys/net/bridge/bridge-nf-call-iptables
 echo 1 > /proc/sys/net/bridge/bridge-nf-call-ip6tables
+
+echo 1 > /proc/sys/net/ipv4/ip_forward

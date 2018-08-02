@@ -14,6 +14,7 @@ echo "DOCKER_CGROUP_DRIVER=$DOCKER_CGROUP_DRIVER"
 
 if [ "$DOCKER_CGROUP_DRIVER" != "$K8S_NODE_CGROUP_DRIVER" ]
 then
+    echo "-----------> set kubelet cgroup-driver=$DOCKER_CGROUP_DRIVER"
     sed -i "s/cgroup-driver=$K8S_NODE_CGROUP_DRIVER/cgroup-driver=$DOCKER_CGROUP_DRIVER/g" /etc/systemd/system/kubelet.service.d/10-kubeadm.conf
     systemctl daemon-reload
 fi

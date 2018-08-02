@@ -10,9 +10,11 @@ else
     then
         echo "use exists kubernetes-server-linux-amd64.tar.gz"
     else
+        echo "-------> start download k8s binary"
         wget https://storage.googleapis.com/kubernetes-release/release/${K8S_VER}/kubernetes-server-linux-amd64.tar.gz
     fi
 
+    echo "-------> install k8s binary"
     tar -xzvf kubernetes-server-linux-amd64.tar.gz
     cp -r kubernetes/server/bin/{kube-apiserver,kube-controller-manager,kube-scheduler,kubectl,kube-proxy,kubelet} /usr/local/bin/
     chmod a+x /usr/local/bin/kube*

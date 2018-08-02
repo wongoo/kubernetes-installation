@@ -7,9 +7,11 @@ echo "-------> start config kubelet"
 systemctl stop kubelet
 
 
-# kubelet 启动时向 kube-apiserver 发送 TLS bootstrapping 请求，需要先将 bootstrap token 文件中的 kubelet-bootstrap 用户赋予 system:node-bootstrapper cluster 角色(role)
+# kubelet 启动时向 kube-apiserver 发送 TLS bootstrapping 请求，
+# 需要先将 bootstrap token 文件中的 kubelet-bootstrap 用户赋予 system:node-bootstrapper cluster 角色(role)
 # 然后 kubelet 才能有权限创建认证请求(certificate signing requests)
 # --user=kubelet-bootstrap 是在 /etc/kubernetes/token.csv 文件中指定的用户名，同时也写入了 /etc/kubernetes/bootstrap.kubeconfig 文件
+
 kubectl create clusterrolebinding kubelet-bootstrap \
   --clusterrole=system:node-bootstrapper \
   --user=kubelet-bootstrap
@@ -21,7 +23,8 @@ cp k8s/node/kubelet.service /usr/lib/systemd/system/kubelet.service
 sed -i "s/__CURR_NODE_IP__/${CURR_NODE_IP}/g" /usr/lib/systemd/system/kubelet.service
 
 # =============================================
-# error: failed to run Kubelet: cannot create certificate signing request: certificatesigningrequests.certificates.k8s.io is forbidden: User "system:anonymous" cannot create certificatesigningrequests.certificates.k8s.io at the cluster scope
+# error: failed to run Kubelet: cannot create certificate signing request:
+# certificatesigningrequests.certificates.k8s.io is forbidden: User "system:anonymous" cannot create certificatesigningrequests.certificates.k8s.io at the cluster scope
 # 以上错误待解决，暂时使用管理权限的kubeconfig配置
 cp ~/.kube/config /etc/kubernetes/kubelet.kubeconfig
 

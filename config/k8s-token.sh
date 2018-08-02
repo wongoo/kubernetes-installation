@@ -1,4 +1,7 @@
 #!/bin/sh
+#
+# Try to generate k8s token when not exits
+#
 
 echo "-------> start generate token"
 

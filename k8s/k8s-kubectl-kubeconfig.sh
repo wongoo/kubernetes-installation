@@ -20,7 +20,7 @@ fi
 
 #-----------------创建 kubectl kubeconfig 文件-----------------
 # 设置集群参数
-kubectl config set-cluster kubernetes \
+kubectl config set-cluster ${K8S_CLUSTER_NAME} \
   --certificate-authority=/etc/kubernetes/ssl/ca.pem \
   --embed-certs=true \
   --server=${KUBE_APISERVER}
@@ -33,7 +33,7 @@ kubectl config set-credentials admin \
 
 # 设置上下文参数
 kubectl config set-context kubernetes \
-  --cluster=kubernetes \
+  --cluster=${K8S_CLUSTER_NAME} \
   --user=admin
 
 # 设置默认上下文

@@ -20,22 +20,25 @@ fi
 
 #-----------------创建 kube-proxy kubeconfig 文件-----------------
 # 设置集群参数
-kubectl config set-cluster kubernetes \
+kubectl config set-cluster ${K8S_CLUSTER_NAME} \
   --certificate-authority=/etc/kubernetes/ssl/ca.pem \
   --embed-certs=true \
   --server=${KUBE_APISERVER} \
   --kubeconfig=kube-proxy.kubeconfig
+
 # 设置客户端认证参数
 kubectl config set-credentials kube-proxy \
   --client-certificate=/etc/kubernetes/ssl/kube-proxy.pem \
   --client-key=/etc/kubernetes/ssl/kube-proxy-key.pem \
   --embed-certs=true \
   --kubeconfig=kube-proxy.kubeconfig
+
 # 设置上下文参数
 kubectl config set-context default \
-  --cluster=kubernetes \
+  --cluster=${K8S_CLUSTER_NAME} \
   --user=kube-proxy \
   --kubeconfig=kube-proxy.kubeconfig
+
 # 设置默认上下文
 kubectl config use-context default --kubeconfig=kube-proxy.kubeconfig
 
