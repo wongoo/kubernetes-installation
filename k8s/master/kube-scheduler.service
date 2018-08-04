@@ -9,7 +9,8 @@ ExecStart=/usr/local/bin/kube-scheduler \
           --leader-elect=true \
           --address=127.0.0.1 \
           --port=10251 \
-          --master=http://127.0.0.1:8080
+          --master=__K8S_MASTER_URL__
+
 Restart=on-failure
 LimitNOFILE=65536
 

@@ -23,8 +23,10 @@ export K8S_NODE2=10.204.0.12
 export K8S_NODE3=10.204.0.6
 
 export K8S_MASTER_IP=10.204.0.11
-export K8S_APISERVER_IP=$K8S_MASTER_IP
 export K8S_MASTER_URL=https://$K8S_MASTER_IP:6443
+
+export K8S_APISERVER_IP=$K8S_MASTER_IP
+export K8S_APISERVER_URL="https://$K8S_APISERVER_IP:6443"
 
 export K8S_CLUSTER_NAME=kubernetes
 export K8S_CLUSTER_IP_RANGE=10.254.0.0/16
@@ -48,6 +50,6 @@ export V_ETCD_CLUSTER_LIST=$V_ETCD_NODE1=https://$K8S_NODE1:2380,$V_ETCD_NODE2=h
 
 source config/k8s-token.sh
 
-env |grep CURR_NODE_I
+env |grep CURR_NODE_IP
 env |grep K8S
 env |grep ETCD

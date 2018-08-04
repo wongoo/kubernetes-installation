@@ -15,7 +15,7 @@ cp k8s/master/kube-apiserver.service /usr/lib/systemd/system/kube-apiserver.serv
 
 sed -i "s/__CURR_NODE_IP__/$CURR_NODE_IP/g" /usr/lib/systemd/system/kube-apiserver.service
 sed -i "s#__K8S_CLUSTER_IP_RANGE__#$K8S_CLUSTER_IP_RANGE#g" /usr/lib/systemd/system/kube-apiserver.service
-sed -i "s#__V_ETCD_ENDPOINTS__#$V_ETCD_ENDPOINTS#g" /usr/lib/systemd/system/kube-apiserver.service
+sed -i "s#__V_ETCD_LISTEN_PEER_URLS__#$V_ETCD_LISTEN_PEER_URLS#g" /usr/lib/systemd/system/kube-apiserver.service
 
 
 systemctl daemon-reload
@@ -25,7 +25,7 @@ systemctl start kube-apiserver
 systemctl status kube-apiserver
 
 # 如果启动失败查看详细信息
-# journalctl -xe
+# journalctl -xef
 
 # 验证apiserver
 # curl https://127.0.0.1:6443/api/v1/nodes --cert /etc/kubernetes/dd_cs_client.crt --key /var/run/kubernetes/dd_cs_client.key --cacert /var/run/kubernetes/dd_ca.crt

@@ -1,21 +1,14 @@
 #!/bin/sh
 
-
-
 echo "-------> start kubeconfig kube-proxy"
 
-previous_dir=$(pwd)
+export KUBE_PORXY_USER=kube-proxy
+export KUBE_PORXY_CONF=/etc/kubernetes/kube-proxy.kubeconfig
 
-# ================GO INTO DIR=======================
-cd /etc/kubernetes
-export KUBE_APISERVER="https://$K8S_APISERVER_IP:6443"
-
-
-
-if [ -f kube-proxy.kubeconfig ]
+if [ -f ${KUBE_PORXY_CONF} ]
 then
     echo "kube-proxy.kubeconfig exists, move to kube-proxy.kubeconfig.bak"
-    mv kube-proxy.kubeconfig kube-proxy.kubeconfig.bak
+    mv ${KUBE_PORXY_CONF} ${KUBE_PORXY_CONF}.bak
 fi
 
 #-----------------创建 kube-proxy kubeconfig 文件-----------------
@@ -23,27 +16,23 @@ fi
 kubectl config set-cluster ${K8S_CLUSTER_NAME} \
   --certificate-authority=/etc/kubernetes/ssl/ca.pem \
   --embed-certs=true \
-  --server=${KUBE_APISERVER} \
-  --kubeconfig=kube-proxy.kubeconfig
+  --server=${K8S_APISERVER_URL} \
+  --kubeconfig=${KUBE_PORXY_CONF}
 
 # 设置客户端认证参数
-kubectl config set-credentials kube-proxy \
+kubectl config set-credentials ${KUBE_PORXY_USER} \
   --client-certificate=/etc/kubernetes/ssl/kube-proxy.pem \
   --client-key=/etc/kubernetes/ssl/kube-proxy-key.pem \
   --embed-certs=true \
-  --kubeconfig=kube-proxy.kubeconfig
+  --kubeconfig=${KUBE_PORXY_CONF}
 
 # 设置上下文参数
 kubectl config set-context default \
   --cluster=${K8S_CLUSTER_NAME} \
-  --user=kube-proxy \
-  --kubeconfig=kube-proxy.kubeconfig
+  --user=${KUBE_PORXY_USER} \
+  --kubeconfig=${KUBE_PORXY_CONF}
 
 # 设置默认上下文
-kubectl config use-context default --kubeconfig=kube-proxy.kubeconfig
+kubectl config use-context default --kubeconfig=${KUBE_PORXY_CONF}
 
-
-
-# =================GO OUT DIR======================
-cd $previous_dir
 

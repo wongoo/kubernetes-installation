@@ -1,16 +1,9 @@
 #!/bin/sh
 
+echo "-------> start kubectl kubeconfig for admin "
 
-
-echo "-------> start kubeconfig kubectl"
-
-previous_dir=$(pwd)
-
-# ================GO INTO DIR=======================
-cd /etc/kubernetes
-export KUBE_APISERVER="https://$K8S_APISERVER_IP:6443"
-
-
+export KUBECTL_ADMIN_USER=admin
+export KUBECTL_ADMIN_CONTEXT=kubernetes
 
 if [ -f ~/.kube/config ]
 then
@@ -23,28 +16,24 @@ fi
 kubectl config set-cluster ${K8S_CLUSTER_NAME} \
   --certificate-authority=/etc/kubernetes/ssl/ca.pem \
   --embed-certs=true \
-  --server=${KUBE_APISERVER}
+  --server=${K8S_APISERVER_URL}
 
 # 设置客户端认证参数
-kubectl config set-credentials admin \
+kubectl config set-credentials ${KUBECTL_ADMIN_USER} \
   --client-certificate=/etc/kubernetes/ssl/admin.pem \
   --embed-certs=true \
   --client-key=/etc/kubernetes/ssl/admin-key.pem
 
 # 设置上下文参数
-kubectl config set-context kubernetes \
+kubectl config set-context ${KUBECTL_ADMIN_CONTEXT} \
   --cluster=${K8S_CLUSTER_NAME} \
-  --user=admin
+  --user=${KUBECTL_ADMIN_USER}
 
 # 设置默认上下文
-kubectl config use-context kubernetes
+kubectl config use-context ${KUBECTL_ADMIN_CONTEXT}
 
-# 注意：~/.kube/config文件拥有对该集群的最高权限，请妥善保管。
-
+echo "----> 注意：~/.kube/config文件拥有对该集群的最高权限，请妥善保管"
+echo "----> ~/.kube/config:"
 cat ~/.kube/config
 
-
-
-# =================GO OUT DIR======================
-cd $previous_dir
 

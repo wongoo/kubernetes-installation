@@ -2,23 +2,7 @@
 
 k8s/k8s-centos7-config.sh
 
-if [ -f /usr/local/bin/kubectl ] && [ -f /usr/local/bin/kube-apiserver ]
-then
-    echo "kubectl and kube-apiserver exists"
-else
-    if [ -f kubernetes-server-linux-amd64.tar.gz ]
-    then
-        echo "use exists kubernetes-server-linux-amd64.tar.gz"
-    else
-        echo "-------> start download k8s binary"
-        wget https://storage.googleapis.com/kubernetes-release/release/${K8S_VER}/kubernetes-server-linux-amd64.tar.gz
-    fi
-
-    echo "-------> install k8s binary"
-    tar -xzvf kubernetes-server-linux-amd64.tar.gz
-    cp -r kubernetes/server/bin/{kube-apiserver,kube-controller-manager,kube-scheduler,kubectl,kube-proxy,kubelet} /usr/local/bin/
-    chmod a+x /usr/local/bin/kube*
-fi
+k8s/master/kube-master-download-binary.sh
 
 k8s/k8s-kubelet-bootstrapping-kubeconfig.sh
 k8s/k8s-kube-proxy-kubeconfig.sh

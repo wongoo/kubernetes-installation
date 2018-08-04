@@ -15,7 +15,7 @@ ExecStart=/usr/local/bin/kube-controller-manager \
           --address=127.0.0.1 \
           --port=10252 \
           --service-cluster-ip-range=__K8S_CLUSTER_IP_RANGE__ \
-          --master=http://127.0.0.1:8080
+          --master=__K8S_MASTER_URL__
 
 Restart=on-failure
 LimitNOFILE=65536

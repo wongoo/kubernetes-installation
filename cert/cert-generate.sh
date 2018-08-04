@@ -22,7 +22,8 @@ else
     wget "${CFSSL_URL}/cfssl_linux-amd64" -O /usr/local/bin/cfssl
     wget "${CFSSL_URL}/cfssljson_linux-amd64" -O /usr/local/bin/cfssljson
     wget "${CFSSL_URL}/cfssl-certinfo_linux-amd64" -O /usr/local/bin/cfssl-certinfo
-    chmod +x /usr/local/bin/cfssl /usr/local/bin/cfssljson /usr/local/bin/cfssl-certinfo
+
+    chmod +x /usr/local/bin/cfssl*
 fi
 
 # ------------------------

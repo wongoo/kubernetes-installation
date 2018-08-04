@@ -32,13 +32,15 @@ else
 EOF
 
     sudo echo "DOCKER_OPTS=\"--registry-mirror=http://hub-mirror.c.163.com\"" >> /etc/default/docker
-
-    echo "-------> start docker service"
-    systemctl enable docker
-    systemctl start docker
-
 fi
 
+
+echo "-------> start docker service"
+systemctl enable docker
+systemctl start docker
+
+# 如果启动失败查看详细信息
+# journalctl -xe
 
 echo "-------> show docker info"
 docker info

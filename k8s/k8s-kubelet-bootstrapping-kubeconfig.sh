@@ -1,20 +1,14 @@
 #!/bin/sh
 
-
-
 echo "-------> start kubeconfig kubelet-bootstrapping"
 
-previous_dir=$(pwd)
+export KUBELET_BOOTSTRAP_CONF=/etc/kubernetes/bootstrap.kubeconfig
+export KUBELET_BOOTSTRAP_USER=kubelet-bootstrap
 
-# ================GO INTO DIR=======================
-cd /etc/kubernetes
-export KUBE_APISERVER="https://$K8S_APISERVER_IP:6443"
-
-
-if [ -f bootstrap.kubeconfig ]
+if [ -f /etc/kubernetes/bootstrap.kubeconfig ]
 then
     echo "bootstrap.kubeconfig exists, move to bootstrap.kubeconfig.bak"
-    mv bootstrap.kubeconfig bootstrap.kubeconfig.bak
+    mv ${KUBELET_BOOTSTRAP_CONF} ${KUBELET_BOOTSTRAP_CONF}.bak
 fi
 
 #-----------------创建 kubelet bootstrapping kubeconfig 文件-----------------
@@ -22,24 +16,21 @@ fi
 kubectl config set-cluster ${K8S_CLUSTER_NAME} \
   --certificate-authority=/etc/kubernetes/ssl/ca.pem \
   --embed-certs=true \
-  --server=${KUBE_APISERVER} \
-  --kubeconfig=bootstrap.kubeconfig
+  --server=${K8S_APISERVER_URL} \
+  --kubeconfig=${KUBELET_BOOTSTRAP_CONF}
 
 # 设置客户端认证参数
-kubectl config set-credentials kubelet-bootstrap \
+kubectl config set-credentials ${KUBELET_BOOTSTRAP_USER} \
   --token=${BOOTSTRAP_TOKEN} \
-  --kubeconfig=bootstrap.kubeconfig
+  --kubeconfig=${KUBELET_BOOTSTRAP_CONF}
 
 # 设置上下文参数
 kubectl config set-context default \
   --cluster=${K8S_CLUSTER_NAME} \
-  --user=kubelet-bootstrap \
-  --kubeconfig=bootstrap.kubeconfig
+  --user=${KUBELET_BOOTSTRAP_USER} \
+  --kubeconfig=${KUBELET_BOOTSTRAP_CONF}
 
 # 设置默认上下文
-kubectl config use-context default --kubeconfig=bootstrap.kubeconfig
+kubectl config use-context default --kubeconfig=${KUBELET_BOOTSTRAP_CONF}
 
-
-# =================GO OUT DIR======================
-cd $previous_dir
 
