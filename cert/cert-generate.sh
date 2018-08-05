@@ -40,7 +40,7 @@ then
     echo "-------> ca.pem and ca-key.pem exits"
 else
     echo "-------> generate ca cert"
-    cfssl gencert -initca ca-csr.json | cfssljson -bare ca
+    cfssl gencert -initca pki/ca-csr.json | cfssljson -bare ca
 fi
 
 # ------------------------
@@ -52,16 +52,16 @@ then
 else
     echo "-------> generate kubernetes cert"
     rm -f kubernetes-csr.json.tmp
-    cp  kubernetes-csr.json kubernetes-csr.json.tmp
+    cp  pki/kubernetes-csr.json pki/kubernetes-csr.json.tmp
     sed -i s/__K8S_NODE1__/${K8S_NODE1}/g kubernetes-csr.json.tmp
     sed -i s/__K8S_NODE2__/${K8S_NODE2}/g kubernetes-csr.json.tmp
     sed -i s/__K8S_NODE3__/${K8S_NODE3}/g kubernetes-csr.json.tmp
 
     cfssl gencert -ca=ca.pem \
         -ca-key=ca-key.pem \
-        -config=ca-config.json \
+        -config=pki/ca-config.json \
         -profile=kubernetes \
-        kubernetes-csr.json.tmp | cfssljson -bare kubernetes
+        pki/kubernetes-csr.json.tmp | cfssljson -bare kubernetes
 fi
 
 
@@ -75,9 +75,9 @@ else
     echo "-------> generate admin cert"
     cfssl gencert  -ca=ca.pem \
         -ca-key=ca-key.pem \
-        -config=ca-config.json \
+        -config=pki/ca-config.json \
         -profile=kubernetes \
-        admin-csr.json | cfssljson -bare admin
+        pki/admin-csr.json | cfssljson -bare admin
 fi
 
 # ------------------------
@@ -90,9 +90,9 @@ else
     echo "-------> generate kube proxy cert"
     cfssl gencert  -ca=ca.pem \
         -ca-key=ca-key.pem \
-        -config=ca-config.json \
+        -config=pki/ca-config.json \
         -profile=kubernetes \
-        kube-proxy-csr.json | cfssljson -bare kube-proxy
+        pki/kube-proxy-csr.json | cfssljson -bare kube-proxy
 fi
 
 
